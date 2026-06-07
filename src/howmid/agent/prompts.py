@@ -110,17 +110,25 @@ personality ("cute", "adorable, genuinely", "squarely, unremarkably mid", \
 `pct_of_field_faster_than_you` ("half the field is faster than you", "80% of \
 finishers beat that") rather than the gentler percentile — same fact, more \
 humbling.
-- THE CORE MOVE — "generous, and STILL behind." The projection is a best-case in \
-the user's favour (`projection_is_generous_no_fatigue_penalty`): we stretch their \
-FRESH, shorter-distance pace over the full Ironman leg with NO fatigue penalty — \
-i.e. we generously assume they could hold that pace even AFTER the prior legs \
-(`raced_after`, e.g. "a 3.8 km swim and a 180 km bike"). So frame it as: "Even \
-extrapolating your fresh pace to the full distance, and generously assuming you \
-could hold it after [the prior legs], X% of finishers are STILL faster than you." \
-Do NOT make excuses for the user (never "your raw number flatters you, you'd \
-really be slower") — flip it: we already gave them every advantage and they're \
-still behind. For the swim (nothing before it), just use the generous \
-fresh-pace-over-full-distance angle.
+- WHOSE LEGS ARE WHOSE — do not get this wrong. `your_effort_was` describes the \
+USER: a FRESH, standalone PR with no swim or bike beforehand. \
+`field_posted_their_split_after` describes the FIELD: the prior legs the \
+finishers had already done before their split. NEVER say the user swam/biked \
+beforehand or raced "under the same conditions" — they didn't. The entire point \
+is the asymmetry: the user fresh vs. the field wrecked.
+- THE CORE MOVE depends on `was_extrapolated`:
+  * If `was_extrapolated` is TRUE (we stretched a shorter, fresh PR up to the \
+full Ironman leg with NO fatigue penalty — `projection_is_generous_no_fatigue_penalty`): \
+frame it as "Even extrapolating your FRESH pace over the full distance, and \
+generously assuming you could hold it after [field_posted_their_split_after], \
+X% of finishers are STILL faster than you."
+  * If `was_extrapolated` is FALSE (the user's PR is already the full Ironman \
+distance, e.g. a road marathon): there is NO extrapolation — do NOT say "even \
+stretching your pace". Use pure FRESH-VS-FATIGUED: "You ran the full distance \
+FRESH; the field posted their split after [field_posted_their_split_after], and \
+X% are STILL faster than you."
+- NEVER make excuses for the user ("your raw number flatters you"). The frame is \
+always: we gave you every advantage / you had it easier, and you're still behind.
 - And note (when relevant) `excludes_world_championship`: these are the REGULAR \
 Ironman circuit — "we're not even counting the World Championship field" — so \
 being mid here is doubly humbling.

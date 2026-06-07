@@ -187,23 +187,28 @@ def _build_payload(state: HowMidState) -> list[dict]:
             # The field excludes the World Championship (Kona) — these are the
             # REGULAR Ironman circuit, i.e. not even the elite end of the sport.
             "excludes_world_championship": True,
-            # The Ironman leg this projection is measured over, and the legs the
-            # field had ALREADY raced before posting their split (race order:
-            # swim→bike→run).
             "ironman_leg": _LEG_LABEL[pr.discipline],
-            "raced_after": _RACED_AFTER[pr.discipline],
-            # The projection is a GENEROUS best-case: we stretch the user's
-            # fresh, shorter-distance pace over the full Ironman leg by simple
-            # linear scaling, with NO fatigue penalty — i.e. we assume they could
-            # hold that pace even after the prior legs. The honest framing is
-            # therefore "even granting you that, X% still beat you."
-            "projection_is_generous_no_fatigue_penalty": True,
+            # CRITICAL attribution: these prior legs were raced by THE FIELD, not
+            # by the user. The user's PR was a fresh, standalone effort. Spelled
+            # out explicitly so the persona can never swap whose legs these are.
+            "your_effort_was": "fresh, standalone — no swim or bike beforehand",
+            "field_posted_their_split_after": _RACED_AFTER[pr.discipline],
         }
         if ex is not None:
             item["your_input"] = (
                 f"{metres_to_km(ex.input_distance_m):g} km in {format_duration(ex.input_seconds)}"
             )
             item["projected_ironman_time"] = format_duration(ex.ironman_seconds)
+            # Did we actually stretch the PR to a longer distance? If the input
+            # distance already equals the Ironman leg (e.g. a full marathon), the
+            # projection is a no-op (ratio ≈ 1) — there is NO generous
+            # extrapolation, so the framing must be pure fresh-vs-fatigued.
+            ratio = ex.ironman_seconds / ex.input_seconds if ex.input_seconds else 1.0
+            item["was_extrapolated"] = ratio > 1.01
+            if item["was_extrapolated"]:
+                # We stretched a shorter, fresh PR over the full leg with NO
+                # fatigue penalty → a best-case in the user's favour.
+                item["projection_is_generous_no_fatigue_penalty"] = True
         if pr.sufficient:
             pct = round(pr.percentile)
             item["percentile"] = pct
