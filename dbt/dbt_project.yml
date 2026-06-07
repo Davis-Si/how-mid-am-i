@@ -1,0 +1,32 @@
+name: howmid
+version: "0.1.0"
+profile: howmid
+
+# dbt sits ON TOP of scripts/clean_data.py: staging models read the existing
+# `clean_results` table; marts build fct_results, dims, and the modeled
+# field_pr_equivalent (Riegel-transformed field — FR-6) on top.
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  howmid:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+
+# Cohort definitions mirror src/howmid/config.py (OFFICIAL_AGE_BANDS,
+# COHORT_GENDERS) — single source of cohort truth. These defaults are kept in
+# sync with config; scripts may override via `dbt run --vars` to inject config
+# values directly. Do not fork the cohort definition elsewhere.
+#
+# NOTE: extrapolation is plain linear distance scaling for now — no Riegel
+# exponents or fatigue factor (deferred). Those vars are intentionally absent.
+vars:
+  cohort_genders: ["M", "F"]
+  official_age_bands:
+    ["18-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54",
+     "55-59", "60-64", "65-69", "70-74", "75-79", "80-84", "85-89"]

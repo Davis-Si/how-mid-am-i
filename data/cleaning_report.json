@@ -1,0 +1,45 @@
+{
+  "source": "coachcox.co.uk/imstats \u2014 Ironman 140.6, 2002-2024, Kona-excluded",
+  "exclude_st_george": true,
+  "thresholds_seconds": {
+    "swim": [
+      1800,
+      8400
+    ],
+    "bike": [
+      12600,
+      36000
+    ],
+    "run": [
+      8100,
+      30000
+    ],
+    "overall": [
+      25200,
+      68400
+    ]
+  },
+  "counts": {
+    "raw_result_rows": 1096719,
+    "finishers_preclean": 892707,
+    "clean_finishers_kept": 886768
+  },
+  "rows_removed": {
+    "missing_or_oob_overall": 2602,
+    "st_george_world_champ": 2259,
+    "overall_less_than_splits": 873,
+    "duplicate_athlete_race": 205,
+    "non_finishers": 204012
+  },
+  "segments_nulled": {
+    "swim": 7195,
+    "bike": 850,
+    "run": 2159
+  },
+  "segment_coverage": {
+    "swim": 858173,
+    "bike": 881803,
+    "run": 881761,
+    "age_group": 868055
+  }
+}

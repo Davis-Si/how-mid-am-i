@@ -1,0 +1,9 @@
+# dbt-duckdb profile. Points at the same warehouse scripts/clean_data.py builds.
+# Path is relative to the dbt/ dir (where dbt runs), hence ../data.
+howmid:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "../data/howmid.duckdb"
+      threads: 4

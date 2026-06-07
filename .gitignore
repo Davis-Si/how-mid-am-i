@@ -1,0 +1,29 @@
+# Secrets
+.env
+
+# Data — never commit the raw scrape or the built warehouse.
+# Raw CSVs: large + scraped (provenance documented, not redistributed here).
+# Built warehouse: ~190MB, reproducible from scripts/clean_data.py + dbt.
+# The small JSON reports (cleaning_report.json, cohort_sizing.json) ARE kept —
+# they're transparency receipts that docs/DATA_CLEANING.md references.
+data/*.csv
+data/*.duckdb
+data/*.duckdb.wal
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# uv
+# (uv.lock IS committed — it's what makes installs reproducible)
+
+# dbt
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/

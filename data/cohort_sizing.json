@@ -1,0 +1,287 @@
+{
+  "min_cohort_threshold": 30,
+  "totals": {
+    "clean_finishers": 886768,
+    "official_cohort": 881615,
+    "official_pct": 99.42,
+    "age_group": 868051,
+    "pro": 13564,
+    "unmapped": 5153
+  },
+  "pro": {
+    "FPRO": 4886,
+    "MPRO": 8678
+  },
+  "age_group_matrix": {
+    "M": {
+      "25-29": {
+        "n": 57312,
+        "swim": 55767,
+        "bike": 56957,
+        "run": 56930,
+        "meets_min": true
+      },
+      "80-84": {
+        "n": 13,
+        "swim": 11,
+        "bike": 13,
+        "run": 13,
+        "meets_min": false
+      },
+      "65-69": {
+        "n": 4535,
+        "swim": 4364,
+        "bike": 4505,
+        "run": 4508,
+        "meets_min": true
+      },
+      "75-79": {
+        "n": 230,
+        "swim": 214,
+        "bike": 228,
+        "run": 228,
+        "meets_min": true
+      },
+      "35-39": {
+        "n": 129102,
+        "swim": 125068,
+        "bike": 128198,
+        "run": 128055,
+        "meets_min": true
+      },
+      "40-44": {
+        "n": 145011,
+        "swim": 140369,
+        "bike": 144152,
+        "run": 144041,
+        "meets_min": true
+      },
+      "70-74": {
+        "n": 1248,
+        "swim": 1180,
+        "bike": 1243,
+        "run": 1242,
+        "meets_min": true
+      },
+      "60-64": {
+        "n": 15389,
+        "swim": 14790,
+        "bike": 15329,
+        "run": 15336,
+        "meets_min": true
+      },
+      "50-54": {
+        "n": 80510,
+        "swim": 77718,
+        "bike": 80142,
+        "run": 80237,
+        "meets_min": true
+      },
+      "18-24": {
+        "n": 17979,
+        "swim": 17468,
+        "bike": 17887,
+        "run": 17893,
+        "meets_min": true
+      },
+      "45-49": {
+        "n": 117721,
+        "swim": 113910,
+        "bike": 117092,
+        "run": 117178,
+        "meets_min": true
+      },
+      "30-34": {
+        "n": 103520,
+        "swim": 100688,
+        "bike": 102830,
+        "run": 102748,
+        "meets_min": true
+      },
+      "55-59": {
+        "n": 37990,
+        "swim": 36596,
+        "bike": 37824,
+        "run": 37873,
+        "meets_min": true
+      }
+    },
+    "F": {
+      "30-34": {
+        "n": 26550,
+        "swim": 25748,
+        "bike": 26433,
+        "run": 26448,
+        "meets_min": true
+      },
+      "55-59": {
+        "n": 7400,
+        "swim": 7055,
+        "bike": 7376,
+        "run": 7380,
+        "meets_min": true
+      },
+      "60-64": {
+        "n": 2583,
+        "swim": 2426,
+        "bike": 2575,
+        "run": 2579,
+        "meets_min": true
+      },
+      "35-39": {
+        "n": 28178,
+        "swim": 27295,
+        "bike": 28052,
+        "run": 28057,
+        "meets_min": true
+      },
+      "40-44": {
+        "n": 30688,
+        "swim": 29594,
+        "bike": 30546,
+        "run": 30565,
+        "meets_min": true
+      },
+      "70-74": {
+        "n": 102,
+        "swim": 88,
+        "bike": 102,
+        "run": 102,
+        "meets_min": true
+      },
+      "65-69": {
+        "n": 607,
+        "swim": 567,
+        "bike": 606,
+        "run": 605,
+        "meets_min": true
+      },
+      "75-79": {
+        "n": 8,
+        "swim": 7,
+        "bike": 8,
+        "run": 8,
+        "meets_min": false
+      },
+      "45-49": {
+        "n": 24702,
+        "swim": 23739,
+        "bike": 24586,
+        "run": 24615,
+        "meets_min": true
+      },
+      "50-54": {
+        "n": 16729,
+        "swim": 16008,
+        "bike": 16670,
+        "run": 16686,
+        "meets_min": true
+      },
+      "18-24": {
+        "n": 3920,
+        "swim": 3752,
+        "bike": 3896,
+        "run": 3897,
+        "meets_min": true
+      },
+      "25-29": {
+        "n": 16023,
+        "swim": 15557,
+        "bike": 15936,
+        "run": 15938,
+        "meets_min": true
+      },
+      "80-84": {
+        "n": 1,
+        "swim": 1,
+        "bike": 1,
+        "run": 1,
+        "meets_min": false
+      }
+    }
+  },
+  "cells_meeting_min": 23,
+  "cells_total": 26,
+  "unmapped_top": [
+    {
+      "division": "M",
+      "n": 4334
+    },
+    {
+      "division": "MPC",
+      "n": 239
+    },
+    {
+      "division": "RELAY",
+      "n": 179
+    },
+    {
+      "division": "PC",
+      "n": 99
+    },
+    {
+      "division": "MPC/ID",
+      "n": 73
+    },
+    {
+      "division": "FPC",
+      "n": 33
+    },
+    {
+      "division": null,
+      "n": 30
+    },
+    {
+      "division": "MHC",
+      "n": 23
+    },
+    {
+      "division": "FPC/ID",
+      "n": 19
+    },
+    {
+      "division": "MST",
+      "n": 15
+    },
+    {
+      "division": "FRELAY",
+      "n": 10
+    },
+    {
+      "division": "MUNKNOWN",
+      "n": 10
+    },
+    {
+      "division": "Relay",
+      "n": 9
+    },
+    {
+      "division": "MXC",
+      "n": 9
+    },
+    {
+      "division": "M70 y +",
+      "n": 6
+    },
+    {
+      "division": "FUNKNOWN",
+      "n": 6
+    },
+    {
+      "division": "CEO",
+      "n": 5
+    },
+    {
+      "division": "F",
+      "n": 5
+    },
+    {
+      "division": "HC",
+      "n": 5
+    },
+    {
+      "division": "M80+",
+      "n": 5
+    }
+  ]
+}

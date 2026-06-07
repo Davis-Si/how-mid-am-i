@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: fct_results
+    description: >
+      One row per (raceID, athleteID) finisher. The grain the percentile engine
+      reads. Segment seconds may be NULL (outliers NULLed upstream).
+    columns:
+      - name: raceID
+        description: Race instance identifier (FK to races).
+        tests:
+          - not_null
+      - name: athleteID
+        description: >
+          Athlete identifier. ~7% of source rows have no athleteID (a known,
+          structural gap in the scrape, not a cleaning error) — so this is a
+          warn-level not_null that documents the gap rather than failing the build.
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: overall_seconds
+        description: Finish time in seconds; always present and in-bounds.
+        tests:
+          - not_null
+      - name: gender
+        description: Normalized M/F (NULL for the handful of unknown-gender rows).
+        tests:
+          - accepted_values:
+              values: ["M", "F"]
+              # a few source rows have NULL gender; don't fail on those
+              config:
+                where: "gender is not null"
+      - name: is_official
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
