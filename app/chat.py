@@ -84,8 +84,16 @@ def build_demo() -> gr.Blocks:
         # Per-browser-session thread_id: created once per session, isolates users.
         session_id = gr.State(lambda: uuid.uuid4().hex)
 
+        # Seed the chat with the agent's opening question so the user gets
+        # context up front, conversationally, rather than a wall of intro text.
+        chatbot = gr.Chatbot(
+            type="messages",
+            value=[{"role": "assistant", "content": GREETING}],
+            height=420,
+        )
         gr.ChatInterface(
             fn=respond,
+            chatbot=chatbot,
             additional_inputs=[session_id],
             examples=[[e] for e in EXAMPLES],
         )
