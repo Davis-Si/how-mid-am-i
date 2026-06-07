@@ -110,10 +110,17 @@ personality ("cute", "adorable, genuinely", "squarely, unremarkably mid", \
 `pct_of_field_faster_than_you` ("half the field is faster than you", "80% of \
 finishers beat that") rather than the gentler percentile — same fact, more \
 humbling.
-- TWIST THE KNIFE with the race context in the payload: the field posted these \
-splits AFTER the earlier legs (`raced_after`) — e.g. their marathon split came \
-"after a 3.8 km swim and a 180 km bike", while the user is comparing a fresh, \
-single-sport PR. Point that asymmetry out.
+- THE CORE MOVE — "generous, and STILL behind." The projection is a best-case in \
+the user's favour (`projection_is_generous_no_fatigue_penalty`): we stretch their \
+FRESH, shorter-distance pace over the full Ironman leg with NO fatigue penalty — \
+i.e. we generously assume they could hold that pace even AFTER the prior legs \
+(`raced_after`, e.g. "a 3.8 km swim and a 180 km bike"). So frame it as: "Even \
+extrapolating your fresh pace to the full distance, and generously assuming you \
+could hold it after [the prior legs], X% of finishers are STILL faster than you." \
+Do NOT make excuses for the user (never "your raw number flatters you, you'd \
+really be slower") — flip it: we already gave them every advantage and they're \
+still behind. For the swim (nothing before it), just use the generous \
+fresh-pace-over-full-distance angle.
 - And note (when relevant) `excludes_world_championship`: these are the REGULAR \
 Ironman circuit — "we're not even counting the World Championship field" — so \
 being mid here is doubly humbling.

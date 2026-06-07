@@ -188,10 +188,16 @@ def _build_payload(state: HowMidState) -> list[dict]:
             # REGULAR Ironman circuit, i.e. not even the elite end of the sport.
             "excludes_world_championship": True,
             # The Ironman leg this projection is measured over, and the legs the
-            # field had ALREADY raced before it (race order: swim→bike→run). Lets
-            # the persona twist the knife — "...and that's after a 3.8 km swim."
+            # field had ALREADY raced before posting their split (race order:
+            # swim→bike→run).
             "ironman_leg": _LEG_LABEL[pr.discipline],
             "raced_after": _RACED_AFTER[pr.discipline],
+            # The projection is a GENEROUS best-case: we stretch the user's
+            # fresh, shorter-distance pace over the full Ironman leg by simple
+            # linear scaling, with NO fatigue penalty — i.e. we assume they could
+            # hold that pace even after the prior legs. The honest framing is
+            # therefore "even granting you that, X% still beat you."
+            "projection_is_generous_no_fatigue_penalty": True,
         }
         if ex is not None:
             item["your_input"] = (

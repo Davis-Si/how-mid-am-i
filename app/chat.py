@@ -87,7 +87,6 @@ def build_demo() -> gr.Blocks:
         # Seed the chat with the agent's opening question so the user gets
         # context up front, conversationally, rather than a wall of intro text.
         chatbot = gr.Chatbot(
-            type="messages",
             value=[{"role": "assistant", "content": GREETING}],
             height=420,
         )
