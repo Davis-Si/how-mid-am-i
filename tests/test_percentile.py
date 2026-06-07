@@ -41,6 +41,35 @@ def test_all_finishers_matches_oracle():
     assert tool.percentile == pytest.approx(orc["percentile"], abs=1e-6)
 
 
+@pytest.mark.parametrize("gender", ["M", "F"])
+def test_gender_only_ranks_against_that_gender(gender):
+    """Gender-only filters rank against that gender's whole field, not everyone."""
+    value = 16_000.0
+    tool = percentile("run", value, {"gender": gender})
+    # Population size equals the gender-filtered count (the new gender path)...
+    assert tool.cohort_label == f"{gender} (all ages)"
+    assert tool.cohort_size == queries.cohort_size(None, "run", gender=gender)
+    # ...and is a strict subset of all finishers (didn't silently widen to all).
+    assert tool.cohort_size < queries.cohort_size(None, "run")
+    # Percentile is consistent with a hand count over the gender-filtered field.
+    n_faster, n = queries.cohort_rank(None, "run", value, gender=gender)
+    assert tool.percentile == pytest.approx(100.0 * (n - n_faster) / n, abs=1e-9)
+
+
+def test_gender_only_differs_from_all_finishers():
+    """A gender-only rank should differ from the all-finishers rank for the same time."""
+    value = 16_000.0
+    men = percentile("run", value, {"gender": "M"})
+    everyone = percentile("run", value, {})
+    assert men.cohort_size < everyone.cohort_size
+    assert men.percentile != pytest.approx(everyone.percentile, abs=1e-9)
+
+
+def test_bad_gender_in_gender_only_raises():
+    with pytest.raises(ValueError):
+        queries.cohort_size(None, "run", gender="X")
+
+
 def test_refusal_on_sub_min_cohort():
     """A known sub-MIN_COHORT_SIZE cell (F75-79) refuses (FR-9)."""
     assert SIZING["age_group_matrix"]["F"]["75-79"]["meets_min"] is False

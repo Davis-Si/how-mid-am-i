@@ -1,0 +1,31 @@
+# Keep the image small and correct. The ONLY data file the runtime needs is the
+# built warehouse (data/howmid.duckdb), which the Dockerfile COPYs explicitly.
+
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Secrets — injected at runtime, never in the image.
+.env
+
+# Raw scrape (238MB) — not needed at runtime; the warehouse is prebuilt.
+data/results.csv
+data/races.csv
+data/series.csv
+
+# dbt build artifacts.
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+
+# Docs / git / tests / scripts — not needed in the runtime image.
+docs/
+tests/
+scripts/
+.git/
+.github/

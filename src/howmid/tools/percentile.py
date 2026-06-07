@@ -30,6 +30,13 @@ from howmid.data import queries
 POPULATION = "Ironman 140.6 finishers (2002-2024, Kona-excluded)"
 
 
+def _normalize_gender(raw) -> str | None:
+    """Map 'M'/'F'/'Male'/'Female' (any case) to 'M'/'F', or None if absent."""
+    if raw is None:
+        return None
+    return {"male": "M", "female": "F", "m": "M", "f": "F"}.get(str(raw).lower())
+
+
 @dataclass(frozen=True)
 class PercentileResult:
     """A grounded percentile read, or a structured insufficient-data refusal."""
@@ -59,10 +66,7 @@ def _resolve_cohort_label(cohort_filters: dict | None) -> str | None:
     if not cohort_filters:
         return None
 
-    raw_gender = cohort_filters.get("gender")
-    gender = {"male": "M", "female": "F", "m": "M", "f": "F"}.get(
-        str(raw_gender).lower(), None
-    ) if raw_gender is not None else None
+    gender = _normalize_gender(cohort_filters.get("gender"))
 
     if cohort_filters.get("pro"):
         if gender is None:
@@ -71,8 +75,8 @@ def _resolve_cohort_label(cohort_filters: dict | None) -> str | None:
 
     age_group = cohort_filters.get("age_group")
     if age_group is None:
-        # gender-only is not an official cohort in fct_results; treat absence of
-        # an age band as "no cohort" rather than inventing one.
+        # No age band → not an official cohort label. Gender-only is handled
+        # separately (the gender column), so return None here for the label.
         return None
 
     age_group = str(age_group)
@@ -98,17 +102,27 @@ def percentile(
 ) -> PercentileResult:
     """Rank an Ironman-distance ``value_seconds`` against the field for a cohort.
 
+    Population, in priority order: an official cohort (gender+age band, or PRO)
+    if the filters resolve one; else **gender-only** (all men / all women) when
+    only a gender is given; else all finishers.
+
     Direction: faster = higher percentile (90 ⇒ faster than 90% of the field).
-    Refuses (``sufficient=False``, ``percentile=None``) when the cohort has fewer
-    than ``config.MIN_COHORT_SIZE`` usable times (FR-9). Out-of-range values are
-    reported as-is, never clamped.
+    Refuses (``sufficient=False``, ``percentile=None``) when the population has
+    fewer than ``config.MIN_COHORT_SIZE`` usable times (FR-9). Out-of-range
+    values are reported as-is, never clamped.
 
     Framed as "vs. Ironman finishers" (FR-11) via the ``population`` field.
     """
     cohort_filters = cohort_filters or {}
     cohort_label = _resolve_cohort_label(cohort_filters)
 
-    size = queries.cohort_size(cohort_label, discipline)
+    # Gender-only fallback: a gender with no resolvable official cohort ranks
+    # against all finishers of that gender (the gender column), not everyone.
+    gender = None if cohort_label else _normalize_gender(cohort_filters.get("gender"))
+    # Human-readable label for the payload/transparency.
+    label = cohort_label or (f"{gender} (all ages)" if gender else None)
+
+    size = queries.cohort_size(cohort_label, discipline, gender=gender)
     if size < config.MIN_COHORT_SIZE:
         # Insufficient data — refuse rather than report a noisy percentile.
         return PercentileResult(
@@ -119,15 +133,17 @@ def percentile(
             cohort_size=size,
             cohort_median_seconds=None,
             sufficient=False,
-            cohort_label=cohort_label,
+            cohort_label=label,
         )
 
-    n_faster, cohort_n = queries.cohort_rank(cohort_label, discipline, value_seconds)
+    n_faster, cohort_n = queries.cohort_rank(
+        cohort_label, discipline, value_seconds, gender=gender
+    )
     # Fraction of the field the athlete is FASTER than. Members strictly faster
     # than the athlete are ahead; the rest (incl. ties) are at-or-behind, so the
     # athlete is faster than (cohort_n - n_faster) of them.
     pct = 100.0 * (cohort_n - n_faster) / cohort_n
-    median = queries.cohort_median_seconds(cohort_label, discipline)
+    median = queries.cohort_median_seconds(cohort_label, discipline, gender=gender)
 
     return PercentileResult(
         discipline=discipline,
@@ -137,5 +153,5 @@ def percentile(
         cohort_size=cohort_n,
         cohort_median_seconds=median,
         sufficient=True,
-        cohort_label=cohort_label,
+        cohort_label=label,
     )
