@@ -46,3 +46,30 @@ uv run python -c "import howmid; print(howmid.__version__)"
 ## Eval results
 
 _(populated by `eval/run_eval.py` once the harness is built — FR-22/23)_
+
+## Data
+
+Ironman 140.6 results, 2002–2024, sourced from Kaggle:
+[**Ironman 140.6 Results Dataset (2002–2024)**](https://www.kaggle.com/datasets/miguswong/ironman-140-6-results-dataset-2002-2024)
+by Migus Wong, originally scraped from
+[coachcox.co.uk/imstats](https://www.coachcox.co.uk/imstats/).
+
+- **~1.1M raw results → 886,768 clean finishers** across 587 races. Cleaning
+  rules and counts are documented and verifiable — see `docs/DATA_CLEANING.md`
+  and `data/cleaning_report.json`.
+- **World Championship excluded.** This is the regular Ironman circuit, *not*
+  Kona — so percentiles read as "faster than people who **finished** an
+  Ironman," a fit but attainable peer group (never "vs. the general public").
+- **The raw CSVs and the built DuckDB warehouse are not committed** (gitignored
+  — large + third-party data). Download the dataset from the Kaggle link above
+  into `data/`, then run `scripts/clean_data.py` to rebuild the warehouse.
+
+The dataset belongs to its original authors and is used here for a
+non-commercial, educational portfolio project. It is referenced, not
+redistributed.
+
+## License
+
+Source code is licensed under the [MIT License](LICENSE). The license covers
+the code only — **not** the Ironman dataset, which retains its own terms (see
+**Data** above).
