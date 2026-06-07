@@ -56,10 +56,15 @@ def respond(message: str, history: list, session_id: str) -> str:
     return answer or "I didn't catch a PR in that — try 'I biked 100k in 5 hours'."
 
 
-INTRO = """# How Mid Am I? 🏊🚴🏃
-Tell me your everyday personal bests and I'll project them onto an Ironman and
-tell you — honestly — how mid you are versus people who actually race them.
-"""
+INTRO = "# How Mid Am I? 🏊🚴🏃"
+
+# The agent's opening line in the chat window — a single question that sets
+# context and asks for the three PRs.
+GREETING = (
+    "Hi — I rank you against people who've actually finished an Ironman. "
+    "What are your PRs for running, cycling, and swimming? "
+    "(distance + time for each, e.g. \"10k in 48 min\")"
+)
 
 DISCLAIMER = (
     "*Every percentile is real, computed from 886,768 Ironman finishers "
@@ -67,9 +72,9 @@ DISCLAIMER = (
 )
 
 EXAMPLES = [
-    "I ran a 25 minute 5k",
-    "I biked 100k in 5 hours and swam 1500m in 30 min",
-    "what if I ran a 22 minute 5k",
+    "My longest run is a half marathon in 1:55",
+    "I ran 10k in 48 min, biked 100k in 5h, and swam 1500m in 32 min",
+    "Best bike: 40k in 1h20",
 ]
 
 

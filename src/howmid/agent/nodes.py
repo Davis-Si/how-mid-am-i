@@ -17,6 +17,7 @@ from __future__ import annotations
 import json
 
 from howmid import llm
+from howmid.config import IRONMAN_DISTANCES_M
 from howmid.agent.prompts import (
     CRITIC_SYSTEM,
     PARSE_SYSTEM,
@@ -33,6 +34,22 @@ from howmid.tools.percentile import percentile
 
 # Retries of the persona after a failed critic check (cap = 1 retry → 2 attempts).
 MAX_SYNTH_ATTEMPTS = 2
+
+# Race order is swim → bike → run. For each discipline: the Ironman leg label,
+# and the legs the field had ALREADY completed before posting this split (so the
+# persona can note the field's split came while fatigued). Built from config so
+# the distances stay the single source of truth.
+_KM = {d: f"{m / 1000:g} km" for d, m in IRONMAN_DISTANCES_M.items()}
+_LEG_LABEL = {
+    "swim": f"the {_KM['swim']} Ironman swim",
+    "bike": f"the {_KM['bike']} Ironman bike",
+    "run": f"the {_KM['run']} Ironman marathon",
+}
+_RACED_AFTER = {
+    "swim": None,  # the swim is first — nothing before it
+    "bike": f"a {_KM['swim']} swim",
+    "run": f"a {_KM['swim']} swim and a {_KM['bike']} bike",
+}
 
 
 # ---------------------------------------------------------------------------
@@ -167,6 +184,14 @@ def _build_payload(state: HowMidState) -> list[dict]:
             "cohort": pr.cohort_label or "all finishers",
             "population": pr.population,
             "is_estimate": True,
+            # The field excludes the World Championship (Kona) — these are the
+            # REGULAR Ironman circuit, i.e. not even the elite end of the sport.
+            "excludes_world_championship": True,
+            # The Ironman leg this projection is measured over, and the legs the
+            # field had ALREADY raced before it (race order: swim→bike→run). Lets
+            # the persona twist the knife — "...and that's after a 3.8 km swim."
+            "ironman_leg": _LEG_LABEL[pr.discipline],
+            "raced_after": _RACED_AFTER[pr.discipline],
         }
         if ex is not None:
             item["your_input"] = (
@@ -174,7 +199,10 @@ def _build_payload(state: HowMidState) -> list[dict]:
             )
             item["projected_ironman_time"] = format_duration(ex.ironman_seconds)
         if pr.sufficient:
-            item["percentile"] = round(pr.percentile)
+            pct = round(pr.percentile)
+            item["percentile"] = pct
+            # Meaner framing, same fact: how much of the field is FASTER than you.
+            item["pct_of_field_faster_than_you"] = 100 - pct
             item["cohort_size"] = pr.cohort_size
             if pr.cohort_median_seconds is not None:
                 item["cohort_median_time"] = format_duration(pr.cohort_median_seconds)
